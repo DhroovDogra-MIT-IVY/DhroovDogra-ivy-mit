@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DhroovDogra Research Hub</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">DhroovDogra Research Hub 🚀</div>
+    <nav>
+      <button id="homeBtn" class="nav-btn active">Home</button>
+      <button id="researchBtn" class="nav-btn">Research</button>
+      <button id="papersBtn" class="nav-btn">Papers</button>
+      <button id="aiBtn" class="nav-btn">AI</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="hero" class="card center">
+      <h1>Explore Space Research — NASA · ISRO · MIT · arXiv</h1>
+      <p class="lead">Live images, latest papers and curated resources for Olympiad aspirants.</p>
+      <div class="controls">
+        <input id="searchInput" placeholder="Search (ex: Mars, propulsion, space debris)" />
+        <select id="filterSelect">
+          <option value="all">All sources</option>
+          <option value="nasa">NASA</option>
+          <option value="isro">ISRO</option>
+          <option value="papers">Papers</option>
+        </select>
+        <button id="searchBtn">Search</button>
+      </div>
+    </section>
+
+    <section id="cardsSection" class="grid"></section>
+
+    <section id="papersSection" class="card hidden">
+      <h2>Latest Papers (Top Schools + arXiv via CrossRef)</h2>
+      <div id="papersList" class="list"></div>
+    </section>
+
+    <section id="aiSection" class="card hidden">
+      <h2>Ask Research AI (experimental)</h2>
+      <div id="chatWrap">
+        <div id="chatLog" class="chat-log"></div>
+        <div class="chat-controls">
+          <input id="chatInput" placeholder="Ask: e.g., 'Explain Parker Solar Probe mission in simple words'" />
+          <button id="chatSend">Send</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- modal for detail -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="modalClose" class="close">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <footer class="footer card">
+    <div>© 2025 Dhroov Dogra | MIT-IVY Project</div>
+    <div class="footer-links">
+      <a href="https://api.nasa.gov" target="_blank">NASA API</a>
+      <a href="https://arxiv.org" target="_blank">arXiv</a>
+      <a href="https://www.crossref.org" target="_blank">CrossRef</a>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
