@@ -1,0 +1,10 @@
+📁 assets/
+   └── images/         ← yahan NASA aur University logos ya research pics
+📁 scripts/
+   └── ai.js           ← AI ya filter logic ke liye
+📁 data/
+   └── nasa.json       ← NASA research links
+   └── universities.json ← MIT, Caltech, Stanford, etc.
+index.html
+style.css
+main.js
