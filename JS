@@ -1,0 +1,70 @@
+const express = require('express');
+const fetch = require('node-fetch');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
+
+const NASA_KEY = process.env.NASA_API_KEY;
+const OPENAI_KEY = process.env.OPENAI_API_KEY;
+
+// Simple proxy for APOD
+app.get('/api/nasa/apod', async (req, res) => {
+  try {
+    const url = `https://api.nasa.gov/planetary/apod?api_key=${NASA_KEY}`;
+    const r = await fetch(url);
+    const j = await r.json();
+    res.json(j);
+  } catch (e) { res.status(500).json({error: e.message}); }
+});
+
+// Mars photos proxy (example)
+app.get('/api/nasa/mars', async (req, res) => {
+  try {
+    const url = `https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&api_key=${NASA_KEY}`;
+    const r = await fetch(url);
+    const j = await r.json();
+    res.json(j.photos || []);
+  } catch (e) { res.status(500).json({error:e.message}); }
+});
+
+// CrossRef proxy (optional)
+app.get('/api/crossref', async (req, res) => {
+  try {
+    const q = req.query.q || 'space';
+    const r = await fetch(`https://api.crossref.org/works?query=${encodeURIComponent(q)}&rows=10`);
+    const j = await r.json();
+    res.json(j);
+  } catch (e) { res.status(500).json({error:e.message}); }
+});
+
+// AI endpoint using OpenAI (example). Requires OPENAI_API_KEY in env.
+app.post('/api/ai/query', async (req, res) => {
+  if(!OPENAI_KEY) return res.status(500).json({error: "OPENAI_API_KEY not set"});
+  const prompt = req.body.prompt || req.query.prompt || "Hello";
+  try {
+    // Example: call OpenAI completions (older). Update for v4+ per your account.
+    const r = await fetch('https://api.openai.com/v1/completions', {
+      method:'post',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization': `Bearer ${OPENAI_KEY}`
+      },
+      body: JSON.stringify({
+        model: "text-davinci-003",
+        prompt: `Explain in simple words: ${prompt}`,
+        max_tokens: 300
+      })
+    });
+    const j = await r.json();
+    res.json({answer: j.choices && j.choices[0] ? j.choices[0].text.trim() : JSON.stringify(j)});
+  } catch(e){
+    res.status(500).json({error:e.message});
+  }
+});
+
+// production
+const port = process.env.PORT || 3000;
+app.listen(port, ()=> console.log("Server listening on", port));
